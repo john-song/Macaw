@@ -120,7 +120,7 @@ public extension CGPoint {
 
 public extension Locus {
 
-    func toCGPath() -> CGPath {
+    func toCGPath() -> CGPath? {
         return RenderUtils.toCGPath(self)
     }
 

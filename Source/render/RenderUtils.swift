@@ -81,7 +81,7 @@ class RenderUtils {
         return Color.rgba(r: color.r(), g: color.g(), b: color.b(), a: Double(color.a()) / 255.0 * opacity)
     }
 
-    class func toCGPath(_ locus: Locus) -> CGPath {
+    class func toCGPath(_ locus: Locus) -> CGPath? {
         if let arc = locus as? Arc {
             if arc.ellipse.rx != arc.ellipse.ry {
                 // http://stackoverflow.com/questions/11365775/how-to-draw-an-elliptical-arc-with-coregraphics
@@ -98,10 +98,10 @@ class RenderUtils {
                 return path
             }
         }
-        return toBezierPath(locus).cgPath
+        return toBezierPath(locus)?.cgPath
     }
 
-    class func toBezierPath(_ locus: Locus) -> MBezierPath {
+    class func toBezierPath(_ locus: Locus) -> MBezierPath? {
         if let round = locus as? RoundRect {
             let corners = CGSize(width: CGFloat(round.rx), height: CGFloat(round.ry))
             return MBezierPath(roundedRect: round.rect.toCG(), byRoundingCorners:
@@ -133,14 +133,15 @@ class RenderUtils {
         } else if let path = locus as? Path {
             return toBezierPath(path)
         } else if let transformedLocus = locus as? TransformedLocus {
-            let path = toBezierPath(transformedLocus.locus)
-            path.apply(transformedLocus.transform.toCG())
-            return path
+            if let path = toBezierPath(transformedLocus.locus) {
+                path.apply(transformedLocus.transform.toCG())
+                return path
+            }
         } else if let ellipse = locus as? Ellipse {
             return MBezierPath(ovalIn: ellipse.bounds().toCG())
         }
 
-        fatalError("Unsupported locus: \(locus)")
+        return nil
     }
 
     fileprivate class func arcToPath(_ arc: Arc) -> MBezierPath {
@@ -573,7 +574,9 @@ class RenderUtils {
             let ry = ellipse.ry
             ctx.addEllipse(in: CGRect(x: cx - rx, y: cy - ry, width: rx * 2, height: ry * 2))
         } else {
-            ctx.addPath(locus.toCGPath())
+            if let path = locus.toCGPath() {
+                ctx.addPath(path)
+            }
         }
     }
 }

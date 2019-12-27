@@ -13,7 +13,11 @@ open class Path: Locus {
     }
 
     override open func bounds() -> Rect {
-        return toCGPath().boundingBoxOfPath.toMacaw()
+        if let path = toCGPath() {
+            return path.boundingBoxOfPath.toMacaw()
+        } else {
+            return Rect(x:0, y:0, w:0, h:0)
+        }
     }
 
     override open func toPath() -> Path {
