@@ -305,7 +305,7 @@ class NodeRenderer {
             return
         }
 
-        RenderUtils.toBezierPath(clip).addClip()
+        RenderUtils.toBezierPath(clip)?.addClip()
     }
 
     private func getMaskedImage(bounds: Rect) -> CGImage {

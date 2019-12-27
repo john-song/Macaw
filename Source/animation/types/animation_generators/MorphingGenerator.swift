@@ -107,8 +107,8 @@ func addMorphingAnimation(_ animation: BasicAnimation, _ context: AnimationConte
 fileprivate func pathAnimation(from: Locus, to: Locus, duration: Double, renderTransform: CGAffineTransform) -> CAAnimation {
 
     var transform = renderTransform
-    let fromPath = from.toCGPath().copy(using: &transform)
-    let toPath = to.toCGPath().copy(using: &transform)
+    let fromPath = from.toCGPath()?.copy(using: &transform)
+    let toPath = to.toCGPath()?.copy(using: &transform)
 
     let animation = CABasicAnimation(keyPath: "path")
     animation.fromValue = fromPath

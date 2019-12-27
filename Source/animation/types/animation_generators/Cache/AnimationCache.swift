@@ -68,12 +68,13 @@ class AnimationCache {
 
             // Clip
             if let clip = AnimationUtils.absoluteClip(renderer) {
-                let maskLayer = CAShapeLayer()
-                let origPath = clip.toCGPath()
-                var offsetTransform = CGAffineTransform(translationX: -1.0 * cgRect.origin.x, y: -1.0 * cgRect.origin.y)
-                let clipPath = origPath.mutableCopy(using: &offsetTransform)
-                maskLayer.path = clipPath
-                layer.mask = maskLayer
+                if let origPath = clip.toCGPath() {
+                    let maskLayer = CAShapeLayer()
+                    var offsetTransform = CGAffineTransform(translationX: -1.0 * cgRect.origin.x, y: -1.0 * cgRect.origin.y)
+                    let clipPath = origPath.mutableCopy(using: &offsetTransform)
+                    maskLayer.path = clipPath
+                    layer.mask = maskLayer
+                }
             }
         }
 

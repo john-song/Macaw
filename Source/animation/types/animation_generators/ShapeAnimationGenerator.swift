@@ -134,8 +134,8 @@ fileprivate func generateShapeAnimation(_ context: AnimationContext, from: Shape
     // Shape
     // Path
     var transform = renderTransform
-    let fromPath = from.form.toCGPath().copy(using: &transform)
-    let toPath = to.form.toCGPath().copy(using: &transform)
+    let fromPath = from.form.toCGPath()?.copy(using: &transform)
+    let toPath = to.form.toCGPath()?.copy(using: &transform)
 
     let pathAnimation = CABasicAnimation(keyPath: "path")
     pathAnimation.fromValue = fromPath
